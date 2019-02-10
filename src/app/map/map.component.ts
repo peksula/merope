@@ -1,47 +1,53 @@
 import { Component, OnInit } from '@angular/core';
-import { latLng, tileLayer } from 'leaflet';
-
+import { latLng, tileLayer, TileLayer } from 'leaflet';
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+    selector: 'app-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
 
-    streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        detectRetina: true,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    wMaps = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-        detectRetina: true,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    mml = tileLayer('http://tiles.kartat.kapsi.fi/1.0.0/peruskartta/{z}/{x}/{y}.png', {
-        detectRetina: true,
-        attribution: '&copy; TBD'
-    });
+    streetMaps: TileLayer = null;
+    mmlMaps: TileLayer = null;
+    options: any; // TBD typing
+    layersControl: any; // TBD
 
-    options = {
-        layers: [ this.streetMaps, this.wMaps ],
-/*        layers: [
-            tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
-        ],*/
-        zoom: 12,
-        center: latLng(60.1699, 24.9384)
-    };
+    /**
+    * Constructor.
+    */
+    constructor() {
+        this.streetMaps = tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                detectRetina: true,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }
+        );
+        this.mmlMaps = tileLayer(
+            'http://tiles.kartat.kapsi.fi/1.0.0/peruskartta/{z}/{x}/{y}.png', {
+                detectRetina: true,
+                attribution: '&copy; TBD'
+            }
+        );
 
-  layersControl = {
-    baseLayers: {
-      'Street Maps': this.streetMaps,
-      'Wikimedia Maps': this.wMaps,
-      'Peruskartta': this.mml
+        this.options = {
+            layers: [ this.streetMaps, this.mmlMaps ],
+            zoom: 14,
+            center: latLng(60.1699, 24.9384)
+        };
+
+        this.layersControl = {
+            baseLayers: {
+                'Street Maps': this.streetMaps,
+                'MML peruskartta': this.mmlMaps
+            }
+        };
     }
-  };
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+    /**
+     * Angular OnInit life cycle hook.
+     */
+    ngOnInit() {
+    }
 
 }
