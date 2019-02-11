@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { latLng, tileLayer, TileLayer } from 'leaflet';
+import { Control, LatLng, Layer, TileLayer, MapOptions } from 'leaflet';
+import { latLng, tileLayer } from 'leaflet';
 
 @Component({
     selector: 'app-map',
@@ -8,10 +9,12 @@ import { latLng, tileLayer, TileLayer } from 'leaflet';
 })
 export class MapComponent implements OnInit {
 
-    streetMaps: TileLayer = null;
-    mmlMaps: TileLayer = null;
-    options: any; // TBD typing
-    layersControl: any; // TBD
+    streetMaps: TileLayer = <TileLayer>{};
+    mmlMaps: TileLayer = <TileLayer>{};
+    options: MapOptions;
+    // layersControl: Control.Layers = <Control.Layers>{};
+    layersControl: any;
+    helsinki: LatLng = latLng(60.1699, 24.9384);
 
     /**
     * Constructor.
@@ -26,14 +29,14 @@ export class MapComponent implements OnInit {
         this.mmlMaps = tileLayer(
             'http://tiles.kartat.kapsi.fi/1.0.0/peruskartta/{z}/{x}/{y}.png', {
                 detectRetina: true,
-                attribution: '&copy; TBD'
+                attribution: '&copy; TBD'// TODO!
             }
         );
 
         this.options = {
             layers: [ this.streetMaps, this.mmlMaps ],
-            zoom: 14,
-            center: latLng(60.1699, 24.9384)
+            zoom: 15,
+            center: this.helsinki
         };
 
         this.layersControl = {
