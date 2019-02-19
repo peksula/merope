@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Control, LatLng, Layer, TileLayer, MapOptions } from 'leaflet';
 import { latLng, tileLayer } from 'leaflet';
 
+import { Tile } from './tile';
+import { TileService } from './tile.service';
+
 @Component({
     selector: 'app-map',
     templateUrl: './map.component.html',
@@ -15,11 +18,12 @@ export class MapComponent implements OnInit {
     // layersControl: Control.Layers = <Control.Layers>{};
     layersControl: any;
     helsinki: LatLng = latLng(60.1699, 24.9384);
+    tiles: Tile[] = [];
 
     /**
     * Constructor.
     */
-    constructor() {
+    constructor(private tileService: TileService) {
         this.streetMaps = tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 detectRetina: true,
@@ -45,6 +49,8 @@ export class MapComponent implements OnInit {
                 'MML peruskartta': this.mmlMaps
             }
         };
+
+        this.getTiles();
     }
 
     /**
@@ -53,4 +59,7 @@ export class MapComponent implements OnInit {
     ngOnInit() {
     }
 
+    getTiles(): void {
+        this.tileService.getTiles().subscribe(tiles => this.tiles = tiles);
+    }
 }
