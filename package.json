@@ -11,7 +11,9 @@
   },
   "jest": {
     "preset": "jest-preset-angular",
-    "setupFilesAfterEnv": ["<rootDir>/setup-jest.ts"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup-jest.ts"
+    ]
   },
   "private": false,
   "dependencies": {
@@ -25,6 +27,7 @@
     "@angular/platform-browser-dynamic": "^7.2.4",
     "@angular/router": "^7.2.4",
     "@asymmetrik/ngx-leaflet": "^5.0.1",
+    "angular-in-memory-web-api": "^0.8.0",
     "core-js": "^2.4.1",
     "leaflet": "^1.4.0",
     "rxjs": "^6.4.0",
