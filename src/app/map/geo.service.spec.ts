@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TileService } from './tile.service';
+import { GeoService } from './geo.service';
 
-describe('TileService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+describe('GeoService', () => {
+    beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
-    const service: TileService = TestBed.get(TileService);
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        const service: GeoService = TestBed.get(GeoService);
+        expect(service).toBeTruthy();
+    });
 });

@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { Tile } from './tile';
+import { Geo } from './geo';
 import { TILES } from './mock-tiles';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TileService {
+export class GeoService {
+    /**
+     * Constructor.
+     */
     constructor() {
     }
 
-    getTiles(): Observable<Tile[]> {
+    getFeatures(): Observable<Geo[]> {
         return of(TILES);
     }
 }

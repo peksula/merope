@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Control, LatLng, Layer, TileLayer, MapOptions } from 'leaflet';
 import { latLng, tileLayer } from 'leaflet';
 
-import { Tile } from './tile';
-import { TileService } from './tile.service';
+import { Geo } from './geo';
+import { GeoService } from './geo.service';
 
 @Component({
     selector: 'app-map',
@@ -18,12 +18,12 @@ export class MapComponent implements OnInit {
     // layersControl: Control.Layers = <Control.Layers>{};
     layersControl: any;
     helsinki: LatLng = latLng(60.1699, 24.9384);
-    tiles: Tile[] = [];
+    tiles: Geo[] = [];
 
     /**
     * Constructor.
     */
-    constructor(private tileService: TileService) {
+    constructor(private geoService: GeoService) {
         this.streetMaps = tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 detectRetina: true,
@@ -60,6 +60,6 @@ export class MapComponent implements OnInit {
     }
 
     getTiles(): void {
-        this.tileService.getTiles().subscribe(tiles => this.tiles = tiles);
+        this.geoService.getFeatures().subscribe(tiles => this.tiles = tiles);
     }
 }

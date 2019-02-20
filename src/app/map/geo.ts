@@ -1,4 +1,4 @@
-export interface Tile {
+export interface Geo {
     id: number;
     name: string;
 }
