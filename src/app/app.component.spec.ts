@@ -23,6 +23,6 @@ describe('AppComponent', () => {
     it(`should have correct title`, async(() => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual('Merope');
+        expect(app.title).toEqual('Tile Catcher');
     }));
 });

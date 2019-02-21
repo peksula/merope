@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { MapComponent } from './map.component';
-import { GeoService } from './geo.service';
+import { GeoService } from '../core/geo.service';
 
 describe('MapComponent', () => {
     let component: MapComponent;

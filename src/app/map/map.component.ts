@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Control, LatLng, Layer, TileLayer, MapOptions } from 'leaflet';
 import { latLng, tileLayer } from 'leaflet';
 
-import { Geo } from './geo';
-import { GeoService } from './geo.service';
+import { Geo, GeoService } from '../core';
 
 @Component({
     selector: 'app-map',
@@ -60,6 +59,9 @@ export class MapComponent implements OnInit {
     }
 
     getTiles(): void {
-        this.geoService.getFeatures().subscribe(tiles => this.tiles = tiles);
+        this.geoService.getFeatures().subscribe(tiles => {
+            this.tiles = tiles;
+            console.log('received ' + JSON.stringify(tiles));
+        });
     }
 }
