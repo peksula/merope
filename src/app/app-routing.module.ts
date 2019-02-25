@@ -11,7 +11,7 @@ const routes: Routes = [
     {
         // Lazy load map module with Angular router upon navigation
         path: 'map',
-        loadChildren: 'app/map/map.module#MapModule'
+        loadChildren: './map/map.module#MapModule'
     },
     {
         path: '**',
