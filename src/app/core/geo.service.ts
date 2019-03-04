@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Geo } from './geo';
+import { Feature } from 'geojson';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,8 @@ export class GeoService {
     /**
      * Gets GeoJSON features.
      */
-    getFeatures(): Observable<Geo[]> {
-        return this.http.get<Geo[]>(this.featuresUrl);
+    getFeatures(): Observable<Feature[]> {
+        return this.http.get<Feature[]>(this.featuresUrl);
     }
 
     /**
@@ -29,8 +29,8 @@ export class GeoService {
      *
      * @param id Id of the feature to get.
      */
-    getFeature(id: number): Observable<Geo> {
+    getFeature(id: number): Observable<Feature> {
         const url = `${this.featuresUrl}/${id}`;
-        return this.http.get<Geo>(url);
+        return this.http.get<Feature>(url);
     }
 }

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Control, LatLng, Layer, TileLayer, MapOptions } from 'leaflet';
-import { latLng, tileLayer } from 'leaflet';
+import { geoJSON, LatLng, MapOptions } from 'leaflet';
+import { latLng } from 'leaflet';
 
-import { Geo, GeoService } from '../core';
+import { MapLayers } from './map-layers';
+import { MapLayerModel } from './map-layer-model';
+import { GeoService } from '../core';
+import { Feature } from 'geojson';
 
 @Component({
     selector: 'app-map',
@@ -10,58 +13,73 @@ import { Geo, GeoService } from '../core';
     styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-
-    streetMaps: TileLayer = <TileLayer>{};
-    mmlMaps: TileLayer = <TileLayer>{};
     options: MapOptions;
     // layersControl: Control.Layers = <Control.Layers>{};
     layersControl: any;
+    layers: L.Layer[];
     helsinki: LatLng = latLng(60.1699, 24.9384);
-    tiles: Geo[] = [];
+    layerModel = new MapLayerModel ([ MapLayers.LAYER_OSM, MapLayers.LAYER_OCM ], MapLayers.LAYER_OSM.id, [ ]);
 
     /**
     * Constructor.
     */
     constructor(private geoService: GeoService) {
-        this.streetMaps = tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                detectRetina: true,
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        this.layersControl = {
+            baseLayers: {
+                'OpenStreetMap': MapLayers.LAYER_OSM.layer,
+                'OpenCycleMap': MapLayers.LAYER_OCM.layer,
+                'MML Peruskartta': MapLayers.LAYER_MML.layer
+            },
+            overlays: {
             }
-        );
-        this.mmlMaps = tileLayer(
-            'http://tiles.kartat.kapsi.fi/1.0.0/peruskartta/{z}/{x}/{y}.png', {
-                detectRetina: true,
-                attribution: '&copy; TBD'// TODO!
-            }
-        );
+        };
 
+        this.layers = [];
         this.options = {
-            layers: [ this.streetMaps, this.mmlMaps ],
-            zoom: 15,
+            zoom: 5,
             center: this.helsinki
         };
 
-        this.layersControl = {
-            baseLayers: {
-                'Street Maps': this.streetMaps,
-                'MML peruskartta': this.mmlMaps
-            }
-        };
-
-        this.getTiles();
+        this.apply();
     }
 
     /**
      * Angular OnInit life cycle hook.
      */
     ngOnInit() {
+        
     }
 
-    getTiles(): void {
-        this.geoService.getFeatures().subscribe(tiles => {
-            this.tiles = tiles;
-            console.log('received ' + JSON.stringify(tiles));
+    /**
+     * Map ready hook.
+     *
+     * @param _event Map
+     */
+    initMap(_event: any) {
+        this.getFeatures();
+    }
+
+    apply() {
+        // Get the active base layer
+        const baseLayer = this.layerModel.baseLayers.find((layer: any) => (layer.id === this.layerModel.baseLayer));
+
+        // Get all the active overlay layers
+        const newLayers = this.layerModel.overlayLayers
+            .filter((l: any) => l.enabled)
+            .map((l: any) => l.layer);
+        newLayers.unshift(baseLayer.layer);
+        this.layers = newLayers;
+    }
+
+    /**
+     * Retrieves the geojson features from backend.
+     */
+    getFeatures(): void {
+        this.geoService.getFeatures().subscribe(features => {
+            features.forEach(feature => {
+                this.layers.push(geoJSON(feature));
+            });
+            console.log('received ' + JSON.stringify(features));
         });
     }
 }

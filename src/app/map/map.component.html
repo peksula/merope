@@ -1,5 +1,7 @@
 <div style="height: 1000px;"
      leaflet 
      [leafletOptions]="options"
-     [leafletLayersControl]="layersControl">
+     [leafletLayers]="layers"
+     [leafletLayersControl]="layersControl"
+     (leafletMapReady)="initMap($event)">
 </div>
