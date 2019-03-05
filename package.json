@@ -7,13 +7,20 @@
     "start": "ng serve",
     "build": "ng build --prod",
     "test": "jest",
+    "test-fixme": "jest --config config/jest.config.json",
     "lint": "ng lint"
   },
   "jest": {
     "preset": "jest-preset-angular",
     "setupFilesAfterEnv": [
       "<rootDir>/test/setup-jest.ts"
-    ]
+    ],
+    "globals": {
+        "ts-jest": {
+            "tsConfigFile": "<rootDir>/config/tsconfig.spec.json"
+        },
+        "__TRANSFORM_HTML__": true
+    }
   },
   "private": false,
   "dependencies": {

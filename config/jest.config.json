@@ -1,6 +1,14 @@
 {
     "preset": "jest-preset-angular",
     "setupFilesAfterEnv": [
-        "<rootDir>/test/setup-jest.ts"
-    ]
+        "../test/setup-jest.ts"
+    ],
+    "jest": {
+        "globals": {
+            "ts-jest": {
+                "tsConfigFile": "../config/tsconfig.spec.json"
+            },
+            "__TRANSFORM_HTML__": true
+        }
+    }
 }
