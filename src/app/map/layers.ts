@@ -1,7 +1,7 @@
 import { tileLayer } from 'leaflet';
 import { LayerIdentity } from './layer-identity';
 
-export class MapLayers {
+export class Layers {
 
     static LAYER_OCM: LayerIdentity = {
         id: 'opencyclemap',

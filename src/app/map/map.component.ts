@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { geoJSON, LatLng, MapOptions } from 'leaflet';
 import { latLng } from 'leaflet';
 
-import { MapLayers } from './map-layers';
+import { Layers } from './layers';
 import { MapLayerModel } from './map-layer-model';
 import { GeoService } from '../core';
 import { Feature } from 'geojson';
+import { LayerIdentity } from './layer-identity';
 
 @Component({
     selector: 'app-map',
@@ -18,7 +19,7 @@ export class MapComponent implements OnInit {
     layersControl: any;
     layers: L.Layer[];
     helsinki: LatLng = latLng(60.1699, 24.9384);
-    layerModel = new MapLayerModel ([ MapLayers.LAYER_OSM, MapLayers.LAYER_OCM ], MapLayers.LAYER_OSM.id, [ ]);
+    layerModel = new MapLayerModel ([ Layers.LAYER_OSM, Layers.LAYER_OCM ], Layers.LAYER_OSM.id, [ ]);
 
     /**
     * Constructor.
@@ -26,9 +27,9 @@ export class MapComponent implements OnInit {
     constructor(private geoService: GeoService) {
         this.layersControl = {
             baseLayers: {
-                'OpenStreetMap': MapLayers.LAYER_OSM.layer,
-                'OpenCycleMap': MapLayers.LAYER_OCM.layer,
-                'MML Peruskartta': MapLayers.LAYER_MML.layer
+                'OpenStreetMap': Layers.LAYER_OSM.layer,
+                'OpenCycleMap': Layers.LAYER_OCM.layer,
+                'MML Peruskartta': Layers.LAYER_MML.layer
             },
             overlays: {
             }
@@ -40,33 +41,36 @@ export class MapComponent implements OnInit {
             center: this.helsinki
         };
 
-        this.apply();
+        this.applyLayers();
     }
 
     /**
      * Angular OnInit life cycle hook.
      */
     ngOnInit() {
-        
+        // Do nothing. Further construction deferred to initMap.
     }
 
     /**
      * Map ready hook.
      *
-     * @param _event Map
+     * @param _event Event data.
      */
     initMap(_event: any) {
         this.getFeatures();
     }
 
-    apply() {
+    /**
+     * Applies the selected layers on the map.
+     */
+    private applyLayers() {
         // Get the active base layer
-        const baseLayer = this.layerModel.baseLayers.find((layer: any) => (layer.id === this.layerModel.baseLayer));
+        const baseLayer = this.layerModel.baseLayers.find((layer: LayerIdentity) => (layer.id === this.layerModel.activeBaseLayerId));
 
         // Get all the active overlay layers
         const newLayers = this.layerModel.overlayLayers
-            .filter((l: any) => l.enabled)
-            .map((l: any) => l.layer);
+            .filter((layer: LayerIdentity) => layer.enabled)
+            .map((layer: LayerIdentity) => layer.layer);
         newLayers.unshift(baseLayer.layer);
         this.layers = newLayers;
     }
