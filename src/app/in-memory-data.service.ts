@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-
-import { Geo } from './core/geo';
-
+import { Feature } from 'geojson';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +14,7 @@ export class InMemoryDataService implements InMemoryDbService {
     }
 
     private getFeatures() {
-        const features = [{
+        const features: Feature[] = [{
             "type": "Feature",
             "properties": {
                 "name": "Test",
